@@ -37,6 +37,14 @@ public class CompanyController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/company-infos")
+    public ResponseEntity<CompanyDTO> getMyCompany() {
+        log.info("Fetching company info for current admin");
+        CompanyDTO companyDTO = companyService.getCompanyForCompanyAdmin();
+        return ResponseEntity.ok(companyDTO);
+    }
+
+
     @PostMapping(path = "/create")
     public ResponseEntity<CompanyDTO> registerCompany(@RequestBody CompanyDTO companyDTO) {
         CompanyDTO createdCompany = companyService.registerCompany(companyDTO);

@@ -18,8 +18,12 @@ public class OpportunityTransformer extends Transformer<Opportunity, Opportunity
             opportunity.setAmount(opportunityDTO.getAmount());
             opportunity.setStage(opportunityDTO.getStage());
             opportunity.setCloseDate(opportunityDTO.getCloseDate());
-            opportunity.setCreatedAt(opportunityDTO.getCreatedAt());
-            opportunity.setContact(contactTransformer.toEntity(opportunityDTO.getContactDTO()));
+            //opportunity.setContact(contactTransformer.toEntity(opportunityDTO.getContactDTO()));
+            if (opportunityDTO.getContactDTO() != null) {
+                Contact contact = new Contact();
+                contact.setContactId(opportunityDTO.getContactDTO().getContactId());
+                opportunity.setContact(contact);
+            }
             opportunity.setContract(contractTransformer.toEntity(opportunityDTO.getContractDTO()));
             opportunity.setProducts(productsTransformer.toEntityList(opportunityDTO.getProductsDTO()));
             return opportunity;
@@ -40,8 +44,13 @@ public class OpportunityTransformer extends Transformer<Opportunity, Opportunity
             opportunityDTO.setAmount(opportunity.getAmount());
             opportunityDTO.setStage(opportunity.getStage());
             opportunityDTO.setCloseDate(opportunity.getCloseDate());
-            opportunityDTO.setCreatedAt(opportunity.getCreatedAt());
-            opportunityDTO.setContactDTO(contactTransformer.toDTO(opportunity.getContact()));
+            //opportunityDTO.setContactDTO(contactTransformer.toDTO(opportunity.getContact()));
+            if (opportunity.getContact() != null) {
+                ContactDTO contactDTO = new ContactDTO();
+                contactDTO.setContactId(opportunity.getContact().getContactId());
+                contactDTO.setName(opportunity.getContact().getName());
+                opportunityDTO.setContactDTO(contactDTO);
+            }
             opportunityDTO.setContractDTO(contractTransformer.toDTO(opportunity.getContract()));
             opportunityDTO.setProductsDTO(productsTransformer.toDTOList(opportunity.getProducts()));
             return opportunityDTO;

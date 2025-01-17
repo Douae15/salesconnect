@@ -1,6 +1,7 @@
 package com.salesconnect.backend.entity;
 
 
+import com.salesconnect.backend.entity.abstractEntity.AbstractEntity;
 import com.salesconnect.backend.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "user")
-public class User implements UserDetails{
+public class User extends AbstractEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;

@@ -1,5 +1,6 @@
 package com.salesconnect.backend.entity;
 
+import com.salesconnect.backend.entity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "opportunity")
-public class Opportunity {
+public class Opportunity extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long opportunityId;
@@ -20,8 +21,8 @@ public class Opportunity {
     private String name;
     private String stage;
     private double amount;
-    private LocalDateTime createdAt;
     private LocalDateTime closeDate;
+
 
     @ManyToOne
     @JoinColumn(name = "contact_id")

@@ -4,6 +4,7 @@ import com.salesconnect.backend.config.jwt.JwtTokenFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -54,13 +55,19 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/all").hasAuthority("ADMIN_GLOBAL")
 
 
-                        // 🔒 Accès réservé à l'Admin d’Entreprise
-                        .requestMatchers("/api/companies/create","/api/companies/update/{id}","/api/companies/delete/{id}").hasAuthority("ADMIN_COMPANY")
+                        // 🔒 Accès réservé à l'Admin d’Entreprise.requestMatchers("/api/companies/my-company").hasAuthority("ADMIN_COMPANY")
+                        .requestMatchers("/api/companies/create","/api/companies/company-infos","/api/companies/update/{id}","/api/companies/delete/{id}").hasAuthority("ADMIN_COMPANY")
                         .requestMatchers("/api/users/getByCompany","/api/users/create","/api/users/get/{id}","/api/users/update/{id}","/api/users/delete/{id}").hasAuthority("ADMIN_COMPANY")
+                        .requestMatchers("/api/contacts/**").hasAuthority("ADMIN_COMPANY")
+                        .requestMatchers(HttpMethod.GET,"/api/opportunities/**").hasAnyAuthority("ADMIN_COMPANY","USER")
 
 
                         // 🔒 Accès réservé aux Utilisateurs
                         .requestMatchers("/api/users/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/opportunities/**").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.PUT, "/api/opportunities/**").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/opportunities/**").hasAuthority("USER")
+
 
                         // 🔐 Tout autre accès nécessite l'authentification
                         .anyRequest().authenticated()

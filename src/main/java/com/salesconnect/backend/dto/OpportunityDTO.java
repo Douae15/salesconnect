@@ -17,7 +17,6 @@ public class OpportunityDTO {
     private String name;
     private String stage;
     private double amount;
-    private LocalDateTime createdAt;
     private LocalDateTime closeDate;
     private ContactDTO contactDTO;
     private ContractDTO contractDTO;

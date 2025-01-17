@@ -9,7 +9,6 @@ public class ContactTransformer extends Transformer<Contact, ContactDTO>{
         if (contactDTO==null)
             return null;
         else{
-            Transformer<Company, CompanyDTO> companyTransformer = new CompanyTransformer();
             Transformer<Activity, ActivityDTO> activityTransformer = new ActivityTransformer();
             Transformer<Opportunity, OpportunityDTO> opportunityTransformer = new OpportunityTransformer();
             Contact contact = new Contact();
@@ -18,7 +17,12 @@ public class ContactTransformer extends Transformer<Contact, ContactDTO>{
             contact.setEmail(contactDTO.getEmail());
             contact.setAddress(contactDTO.getAddress());
             contact.setPhone(contactDTO.getPhone());
-            contact.setCompany(companyTransformer.toEntity(contactDTO.getCompanyDTO()));
+            if (contactDTO.getCompanyDTO() != null) {
+                Company company = new Company();
+                company.setCompanyId(contactDTO.getCompanyDTO().getCompanyId());
+                company.setName(contactDTO.getCompanyDTO().getName());
+                contact.setCompany(company);
+            }
             contact.setActivities(activityTransformer.toEntityList(contactDTO.getActivitiesDTO()));
             contact.setOpportunities(opportunityTransformer.toEntityList(contactDTO.getOpportunitiesDTO()));
 
@@ -31,7 +35,6 @@ public class ContactTransformer extends Transformer<Contact, ContactDTO>{
         if (contact==null)
             return null;
         else{
-            Transformer<Company, CompanyDTO> companyTransformer = new CompanyTransformer();
             Transformer<Activity, ActivityDTO> activityTransformer = new ActivityTransformer();
             Transformer<Opportunity, OpportunityDTO> opportunityTransformer = new OpportunityTransformer();
             ContactDTO contactDTO = new ContactDTO();
@@ -40,7 +43,12 @@ public class ContactTransformer extends Transformer<Contact, ContactDTO>{
             contactDTO.setEmail(contact.getEmail());
             contactDTO.setAddress(contact.getAddress());
             contactDTO.setPhone(contact.getPhone());
-            contactDTO.setCompanyDTO(companyTransformer.toDTO(contact.getCompany()));
+            if (contact.getCompany() != null) {
+                CompanyDTO companyDTO = new CompanyDTO();
+                companyDTO.setCompanyId(contact.getCompany().getCompanyId());
+                companyDTO.setName(contact.getCompany().getName());
+                contactDTO.setCompanyDTO(companyDTO);
+            }
             contactDTO.setActivitiesDTO(activityTransformer.toDTOList(contact.getActivities()));
             contactDTO.setOpportunitiesDTO(opportunityTransformer.toDTOList(contact.getOpportunities()));
 

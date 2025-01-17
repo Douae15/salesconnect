@@ -11,6 +11,7 @@ import com.salesconnect.backend.service.CompanyService;
 import com.salesconnect.backend.transformer.CompanyTransformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +44,23 @@ public class CompanyServiceImpl implements CompanyService {
         return company.map(companyTransformer::toDTO).orElse(null);
     }
 
-    /*@Override
-    public CompanyDTO createCompany(CompanyDTO companyDTO) {
-        Company company = companyTransformer.toEntity(companyDTO);
-        Company savedCompany = companyRepository.save(company);
-        return companyTransformer.toDTO(savedCompany);
-    }*/
+    @Override
+    public CompanyDTO getCompanyForCompanyAdmin() {
+        // Récupérer l'utilisateur connecté
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Chercher l'utilisateur par email
+        User adminUser = userRepository.findByEmail(userEmail);
+
+        // Vérifier si c'est bien un admin d'entreprise
+        if (adminUser.getRole() != Role.ADMIN_COMPANY) {
+            throw new RuntimeException("Access denied: Not a company admin");
+        }
+
+        // Retourner les infos de l'entreprise associée
+        Company company = adminUser.getCompany();
+        return companyTransformer.toDTO(company);
+    }
 
     @Override
     public CompanyDTO registerCompany(CompanyDTO companyDTO) {
@@ -59,7 +71,6 @@ public class CompanyServiceImpl implements CompanyService {
                 .phone(companyDTO.getPhone())
                 .address(companyDTO.getAddress())
                 .industry(companyDTO.getIndustry())
-                .createdAt(LocalDateTime.now())
                 .build();
 
         // Sauvegarder l'entreprise
@@ -92,7 +103,6 @@ public class CompanyServiceImpl implements CompanyService {
                 .phone(company.getPhone())
                 .address(company.getAddress())
                 .industry(company.getIndustry())
-                .createdAt(company.getCreatedAt())
                 .build();
 
         return response;

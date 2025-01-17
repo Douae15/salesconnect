@@ -1,5 +1,6 @@
 package com.salesconnect.backend.entity;
 
+import com.salesconnect.backend.entity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "company")
-public class Company {
+public class Company extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companyId;
@@ -26,8 +27,6 @@ public class Company {
     private String phone;
     private String address;
     private String industry;
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "company")
     private List<User> users;

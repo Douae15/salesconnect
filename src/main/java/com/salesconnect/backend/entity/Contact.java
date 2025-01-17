@@ -1,5 +1,6 @@
 package com.salesconnect.backend.entity;
 
+import com.salesconnect.backend.entity.abstractEntity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "contact")
-public class Contact {
+public class Contact extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contactId;
