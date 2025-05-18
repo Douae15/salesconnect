@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,8 +22,14 @@ public class Product {
     private String name;
     private String description;
     private double price;
+    private int quantity;
 
-    @ManyToMany(mappedBy = "products")
-    private List<Opportunity> opportunities;
+    @ManyToMany(fetch=FetchType.LAZY)
+    @JoinTable(name = "opportunity_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "opportunity_id"))
+    private Set<Opportunity> opportunities = new HashSet<>();
+
+
 }
 

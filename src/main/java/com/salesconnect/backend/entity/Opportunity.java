@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,12 +33,9 @@ public class Opportunity extends AbstractEntity {
     @JoinColumn(name = "contract_id")
     private Contract contract;
 
-    @ManyToMany
-    @JoinTable(
-            name = "opportunity_product",
-            joinColumns = @JoinColumn(name = "opportunity_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    @ManyToMany(mappedBy = "opportunities", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Product> products = new ArrayList<>();
+
+
 }
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,6 +20,10 @@ public class OpportunityDTO {
     private LocalDateTime closeDate;
     private ContactDTO contactDTO;
     private ContractDTO contractDTO;
-    private List<ProductDTO> productsDTO;
+    private List<ProductDTO> productsDTO = new ArrayList<>();
+    private LocalDateTime createdAt;
+    private String createdBy;
+    private LocalDateTime modifiedAt;
+    private String modifiedBy;
 }
 

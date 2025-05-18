@@ -3,6 +3,9 @@ package com.salesconnect.backend.transformer;
 import com.salesconnect.backend.dto.*;
 import com.salesconnect.backend.entity.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductTransformer extends Transformer<Product, ProductDTO>{
     @Override
     public Product toEntity(ProductDTO productDTO) {
@@ -15,8 +18,11 @@ public class ProductTransformer extends Transformer<Product, ProductDTO>{
             product.setName(productDTO.getName());
             product.setPrice(productDTO.getPrice());
             product.setDescription(productDTO.getDescription());
-            product.setOpportunities(opportunityTransformer.toEntityList(productDTO.getOpportunitiesDTO()));
+            product.setQuantity(productDTO.getQuantity());
+            //product.setOpportunities(opportunityTransformer.toEntityList(productDTO.getOpportunitiesDTO()));
+
             return product;
+
         }
     }
 
@@ -31,7 +37,8 @@ public class ProductTransformer extends Transformer<Product, ProductDTO>{
             productDTO.setName(product.getName());
             productDTO.setPrice(product.getPrice());
             productDTO.setDescription(product.getDescription());
-            productDTO.setOpportunitiesDTO(opportunityTransformer.toDTOList(product.getOpportunities()));
+            productDTO.setQuantity(product.getQuantity());
+            //productDTO.setOpportunitiesDTO(opportunityTransformer.toDTOList(product.getOpportunities()));
             return productDTO;
         }
     }
